@@ -1,4 +1,5 @@
 ---
+import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 
 export interface Props {
@@ -21,9 +22,10 @@ const { title = "Victor Ndaba" } = Astro.props as Props;
       class="mx-auto max-w-6xl w-full h-full bg-white dark:bg-zinc-900 ring-1 ring-zinc-100 dark:ring-zinc-300/20"
     >
       <Header />
-      <div class="p-12">
+      <div class="p-12 pt-14 text-zinc-900 dark:text-zinc-100">
         <slot />
       </div>
+      <Footer />
     </div>
   </body>
 </html>
