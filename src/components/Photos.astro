@@ -1,0 +1,31 @@
+---
+import { Image } from "@astrojs/image/components";
+import img5 from "../images/five.jpg";
+import img4 from "../images/four.jpg";
+import img1 from "../images/one.jpg";
+import img3 from "../images/three.jpg";
+import img2 from "../images/two.jpg";
+
+let rotations = ["rotate-2", "-rotate-2", "rotate-2", "rotate-2", "-rotate-2"];
+---
+
+<div class="">
+  <div class="-my-4 flex justify-center gap-5 overflow-hidden py-4 sm:gap-8">
+    {
+      [img1, img5, img3, img2, img4].map((image, imageIndex) => (
+        <div
+          class={`relative aspect-[9/10] w-44 flex-none overflow-hidden rounded-xl bg-zinc-100 dark:bg-zinc-800 sm:w-72 sm:rounded-2xl
+              ${rotations[imageIndex % rotations.length]}
+            `}
+        >
+          <Image
+            src={image}
+            alt="Victor Ndaba"
+            sizes="(min-width: 640px) 18rem, 11rem"
+            class="absolute inset-0 h-full w-full object-cover"
+          />
+        </div>
+      ))
+    }
+  </div>
+</div>
