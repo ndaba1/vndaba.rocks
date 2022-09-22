@@ -17,8 +17,15 @@ const { title = "Victor Ndaba" } = Astro.props as Props;
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+
+    <link
+      rel="preload"
+      as="font"
+      href="/fonts/ibm-plex-sans-var-italic.woff2"
+    />
+    <link rel="preload" as="font" href="/fonts/ibm-plex-sans-var.woff2" />
   </head>
-  <body class="bg-gray-300 dark:bg-black font-plex">
+  <body class="bg-white dark:bg-black font-plex">
     <div class="mx-auto max-w-6xl">
       <Header />
     </div>
