@@ -1,7 +1,38 @@
 ---
+import Container from "../components/Container.astro";
+import Photos from "../components/Photos.astro";
+import {
+  GitHubIcon,
+  InstagramIcon,
+  LinkedInIcon,
+  TwitterIcon,
+} from "../components/SocialIcons";
+import { SocialLink } from "../components/SocialLinks";
 import MainLayout from "../layouts/MainLayout.astro";
 ---
 
 <MainLayout>
-	  <h1>Home</h1>
+  <Container>
+    <div class="md:w-2/3 my-6 space-y-5">
+      <h1 class="sm:text-6xl">
+        <span
+          class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-blue-500"
+          >Roses are red, violets are blue...</span
+        > welcome to my site, nice to have you.
+      </h1>
+      <p class="dimmed tracking-wide leading-relaxed text-lg">
+        I'm Victor. I'm majorly a software developer but I also do 3D animation
+        with blender, occassionaly write stories and scripts, some part-time
+        physics research and dabble in music production. This is my personal
+        portfolio and blog where I share my 2 cents. Feel free to look around.
+      </p>
+      <div class="flex items-center space-x-2">
+        <SocialLink href={"#"} icon={TwitterIcon} />
+        <SocialLink href={"#"} icon={GitHubIcon} />
+        <SocialLink href={"#"} icon={InstagramIcon} />
+        <SocialLink href={"#"} icon={LinkedInIcon} />
+      </div>
+    </div>
+  </Container>
+  <Photos />
 </MainLayout>
