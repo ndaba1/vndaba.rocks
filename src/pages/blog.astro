@@ -1,0 +1,28 @@
+---
+import Container from "../components/Container.astro";
+import MainLayout from "../layouts/MainLayout.astro";
+
+const blogs = await Astro.glob("../blogs/*.mdx");
+---
+
+<MainLayout>
+  <Container>
+    <div class="md:w-3/4 space-y-5">
+      <h1 class="leading-tight">
+        Blogs on Software development, UI Design, CG & 3D, and then some...
+      </h1>
+      <p class="dimmed leading-normal text-lg">
+        I love writing about things I'm passionate about. I write primarily
+        about software development in general, anything from frontend frameworks
+        to backend development, machine learning and programming in general. I
+        may occassionaly thrown in a blog or two about UI Design, blender and
+        houdini and even shows! Enjoy...
+      </p>
+    </div>
+    {
+      blogs.map((b) => {
+        return <h1>{b.frontmatter.slug}</h1>;
+      })
+    }
+  </Container>
+</MainLayout>
