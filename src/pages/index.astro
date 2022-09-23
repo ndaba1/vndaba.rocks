@@ -9,6 +9,12 @@ import {
 } from "../components/SocialIcons";
 import { SocialLink } from "../components/SocialLinks";
 import MainLayout from "../layouts/MainLayout.astro";
+
+let gradients = [
+  "from-red-500 to-yellow-500 via-purple-500",
+  "from-orange-500 to-green-500 via-cyan-500",
+  "from-green-500 to-pink-600 via-cyan-500",
+];
 ---
 
 <MainLayout>
@@ -35,4 +41,36 @@ import MainLayout from "../layouts/MainLayout.astro";
     </div>
   </Container>
   <Photos />
+  <Container class="my-10">
+    <h2 class="text-4xl font-medium">Featured blog posts</h2>
+
+    <section class="grid gap-8 grid-cols-1 md:grid-cols-3 my-8">
+      {
+        gradients.map((g) => (
+          <div
+            class={`rounded-2xl bg-gradient-to-tr from-red-500 to-yellow-500 via-purple-500 p-1 text-lg cursor-pointer transition-all hover:scale-105 group ${g}`}
+          >
+            <div class="bg-white dark:bg-zinc-900 rounded-2xl p-5 space-y-3">
+              <h5 class="line-clamp-1 font-medium !text-xl">Why Rust?</h5>
+              <p class="dimmed line-clamp-4">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error
+                quae perferendis cumque, ratione dolorum itaque voluptas
+                temporibus neque? Minima, quidem.
+              </p>
+              <div class="flex items-center gap-3">
+                {["rust", "coding"].map((i) => (
+                  <span class="text-sm bg-green-300 dark:bg-green-600/30 rounded-3xl px-2">
+                    #{i}
+                  </span>
+                ))}
+              </div>
+              <div>
+                <span class="group-hover:text-blue-500">Read more</span>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </section>
+  </Container>
 </MainLayout>
