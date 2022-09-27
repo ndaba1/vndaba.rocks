@@ -2,7 +2,7 @@
 import Container from "../../components/Container.astro";
 import MainLayout from "../../layouts/MainLayout.astro";
 export async function getStaticPaths() {
-  const posts = await Astro.glob("../../blogs/*.mdx");
+  const posts = await Astro.glob("../../blogs/**/*.mdx");
 
   return posts.map((post) => ({
     params: {
