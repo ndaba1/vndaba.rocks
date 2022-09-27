@@ -20,6 +20,7 @@ const { Content, frontmatter } = Astro.props.post;
 <MainLayout>
   <Container>
     <div class="flex flex-col space-y-3">
+      <a href="/blog">Go Back</a>
       <h1 class="capitalize">{frontmatter.title}</h1>
       <h5 class="dimmed">
         By Victor Ndaba, {new Date(frontmatter.date).toLocaleDateString()}
@@ -35,7 +36,7 @@ const { Content, frontmatter } = Astro.props.post;
         }
       </div>
     </div>
-    <div class="text-lg !mt-6">
+    <div class="text-lg !mt-6 space-y-4">
       <Content />
     </div>
   </Container>
