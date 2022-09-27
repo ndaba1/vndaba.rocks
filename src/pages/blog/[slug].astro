@@ -1,0 +1,42 @@
+---
+import Container from "../../components/Container.astro";
+import MainLayout from "../../layouts/MainLayout.astro";
+export async function getStaticPaths() {
+  const posts = await Astro.glob("../../blogs/*.mdx");
+
+  return posts.map((post) => ({
+    params: {
+      slug: post.frontmatter.slug,
+    },
+    props: {
+      post,
+    },
+  }));
+}
+
+const { Content, frontmatter } = Astro.props.post;
+---
+
+<MainLayout>
+  <Container>
+    <div class="flex flex-col space-y-3">
+      <h1 class="capitalize">{frontmatter.title}</h1>
+      <h5 class="dimmed">
+        By Victor Ndaba, {new Date(frontmatter.date).toLocaleDateString()}
+      </h5>
+      <div class="flex items-center gap-3">
+        <span>Tags:</span>
+        {
+          frontmatter.tags.map((i: string) => (
+            <span class="text-sm bg-green-300 dark:bg-green-600/30 rounded-3xl px-2">
+              #{i}
+            </span>
+          ))
+        }
+      </div>
+    </div>
+    <div class="text-lg !mt-6">
+      <Content />
+    </div>
+  </Container>
+</MainLayout>
