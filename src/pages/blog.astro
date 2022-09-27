@@ -3,7 +3,7 @@ import LinkIcon from "@astropub/icons/Link2";
 import Container from "../components/Container.astro";
 import MainLayout from "../layouts/MainLayout.astro";
 
-const blogs = await Astro.glob("../blogs/*.mdx");
+const blogs = await Astro.glob("../blogs/**/*.mdx");
 ---
 
 <MainLayout>
