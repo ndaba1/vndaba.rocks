@@ -5,37 +5,33 @@ import Scripts from "~/components/Scripts.astro";
 import "~/styles/global.css";
 
 export interface Props {
-  title?: string;
+	title?: string;
 }
 
 const { title = "Victor Ndaba" } = Astro.props as Props;
 ---
 
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
 
-    <link
-      rel="preload"
-      as="font"
-      href="/fonts/ibm-plex-sans-var-italic.woff2"
-    />
-    <link rel="preload" as="font" href="/fonts/ibm-plex-sans-var.woff2" />
-  </head>
-  <body class="bg-white dark:bg-black font-plex">
-    <div class="mx-auto max-w-6xl">
-      <Header />
-    </div>
-    <div class="pt-10">
-      <slot />
-    </div>
-    <div class="mx-auto max-w-6xl">
-      <Footer />
-    </div>
-    <Scripts />
-  </body>
+		<link
+			rel="preload"
+			as="font"
+			href="/fonts/ibm-plex-sans-var-italic.woff2"
+		/>
+		<link rel="preload" as="font" href="/fonts/ibm-plex-sans-var.woff2" />
+	</head>
+	<body class="bg-white dark:bg-black font-plex">
+		<Header />
+		<div class="pt-10">
+			<slot />
+		</div>
+		<Footer />
+		<Scripts />
+	</body>
 </html>
