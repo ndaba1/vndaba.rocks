@@ -1,10 +1,5 @@
 import clsx from "clsx";
-import {
-  GitHubIcon,
-  InstagramIcon,
-  LinkedInIcon,
-  TwitterIcon,
-} from "./SocialIcons";
+import { GitHubIcon, InstagramIcon, LinkedInIcon, TwitterIcon } from "./SocialIcons";
 
 interface SLProps {
   className?: string;

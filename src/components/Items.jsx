@@ -36,9 +36,7 @@ export default function Items() {
             className={`text-5xl text-transparent bg-gradient-to-r  bg-clip-text font-bold !leading-snug transition-all ${
               current === index ? `animatedText block` : "hidden"
             } ${
-              index % 2 === 0
-                ? "from-red-400 to-green-500 via-yellow-400"
-                : "from-purple-400 to-teal-500 via-cyan-400"
+              index % 2 === 0 ? "from-red-400 to-green-500 via-yellow-400" : "from-purple-400 to-teal-500 via-cyan-400"
             }`}
           >
             {item}
