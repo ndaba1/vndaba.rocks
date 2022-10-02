@@ -1,5 +1,6 @@
 {
-  "name": "@example/minimal",
+  "name": "vndaba.rocks",
+  "description": "My personal portfolio website and blog",
   "type": "module",
   "version": "0.0.1",
   "private": true,
