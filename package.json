@@ -10,7 +10,10 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "format": "prettier -w ./**/*.{js,ts,jsx,tsx}",
+    "lint": "eslint . --ext .js,.ts,.astro,.jsx,.tsx",
+    "check:fmt": "prettier -c ./**/*.{js,ts,jsx,tsx}"
   },
   "dependencies": {
     "@astrojs/image": "^0.7.0",
