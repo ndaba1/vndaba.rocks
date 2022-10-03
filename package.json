@@ -30,6 +30,10 @@
     "tailwindcss": "^3.0.24"
   },
   "devDependencies": {
+    "@astrojs/partytown": "^1.0.0",
+    "@astrojs/rss": "^1.0.2",
+    "@astrojs/sitemap": "^1.0.0",
+    "@astrolib/seo": "^0.2.1",
     "@commitlint/cli": "^17.1.2",
     "@commitlint/config-conventional": "^17.1.0",
     "@types/react": "^18.0.20",
@@ -37,8 +41,10 @@
     "@typescript-eslint/parser": "^5.38.0",
     "astro-icon": "^0.7.3",
     "eslint": "^8.23.1",
+    "eslint-plugin-astro": "^0.19.0",
     "husky": "^8.0.1",
-    "prettier": "^2.7.1"
+    "prettier": "^2.7.1",
+    "prettier-plugin-astro": "^0.5.5"
   },
   "engines": {
     "node": "^14.15.0 || >=16.0.0"
