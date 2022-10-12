@@ -12,6 +12,8 @@ specifiers:
   '@astropub/icons': ^0.2.0
   '@commitlint/cli': ^17.1.2
   '@commitlint/config-conventional': ^17.1.0
+  '@formkit/auto-animate': 1.0.0-beta.3
+  '@headlessui/react': ^1.7.3
   '@heroicons/react': ^2.0.11
   '@tailwindcss/line-clamp': ^0.4.2
   '@types/react': ^18.0.20
@@ -36,6 +38,8 @@ dependencies:
   '@astrojs/react': 1.1.3_biqbaboplfbrettd7655fr4n2y
   '@astrojs/tailwind': 2.0.1_tailwindcss@3.1.8
   '@astropub/icons': 0.2.0_astro@1.2.7
+  '@formkit/auto-animate': 1.0.0-beta.3
+  '@headlessui/react': 1.7.3_biqbaboplfbrettd7655fr4n2y
   '@heroicons/react': 2.0.11_react@18.2.0
   '@tailwindcss/line-clamp': 0.4.2_tailwindcss@3.1.8
   astro: 1.2.7
@@ -706,6 +710,21 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /@formkit/auto-animate/1.0.0-beta.3:
+    resolution: {integrity: sha512-glsi+ytwQpxT/Ctr9GtcIfVr4dO6mJ04mQbNU8MFSdCdqMopHtyfU5Fib0+9lNFIeR0luY4/0NW95/2R5pKsag==}
+    dev: false
+
+  /@headlessui/react/1.7.3_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-LGp06SrGv7BMaIQlTs8s2G06moqkI0cb0b8stgq7KZ3xcHdH3qMP+cRyV7qe5x4XEW/IGY48BW4fLesD6NQLng==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: ^16 || ^17 || ^18
+      react-dom: ^16 || ^17 || ^18
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
 
   /@heroicons/react/2.0.11_react@18.2.0:
     resolution: {integrity: sha512-bASjOgSSaYj8HqXWsOqaBiB6ZLalE/g90WYGgZ5lPm4KCCG7wPXntY4kzHf5NrLh6UBAcnPwvbiw1Ne9GYfJtw==}
