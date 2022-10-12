@@ -5,26 +5,26 @@ import Scripts from "~/components/Scripts.astro";
 import "~/styles/global.css";
 
 export interface Props {
-	title?: string;
+  title?: string;
 }
 
-const { title = "Victor Ndaba" } = Astro.props as Props;
+const { title = "Victor Ndaba | Software developer, 3D Animator, Physics researcher." } = Astro.props as Props;
 ---
 
 <html lang="en" class="motion-safe:scroll-smooth 2xl:text-[20px]">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-	</head>
-	<body class="bg-white dark:bg-black font-plex">
-		<Header />
-		<main class="pt-10">
-			<slot />
-		</main>
-		<Footer />
-		<Scripts />
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body class="bg-white dark:bg-black font-plex">
+    <Header />
+    <main class="pt-10">
+      <slot />
+    </main>
+    <Footer />
+    <Scripts />
+  </body>
 </html>
