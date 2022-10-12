@@ -1,0 +1,128 @@
+---
+import {
+  CheckCircleIcon,
+  CloudIcon,
+  CodeBracketIcon,
+  CogIcon,
+  CommandLineIcon,
+  ComputerDesktopIcon,
+  DevicePhoneMobileIcon,
+  RocketLaunchIcon,
+  ServerIcon,
+} from "@heroicons/react/20/solid/index";
+const skills = [
+  {
+    title: "Frontend developer",
+    items: [
+      "2+ years of experience with Javascript frameworks",
+      "I can and have used React, Vue, Angular and Svelte to build Single Page Apps",
+      "Experience with meta-frameworks such as Next.js, Nuxt.js, Remix and Redwood.js to build SSR apps",
+      "Used platforms such as Vercel, Netlify and Github pages to deploy websites and web apps",
+      "Used Gatsby.js, Astro.js and other Static Site generators to build and deploy static sites such as this blog",
+    ],
+  },
+  {
+    title: "Backend developer",
+    items: [
+      "Created and deployed backend apps running in Node.js, Python and Golang",
+      "Deployed backend apps on Heroku, Fly.io, Cyclic and GCP",
+      "Experience with Ruby on rails, Laravel, Spring boot and other legacy backend frameworks",
+      "Able to develop, test and deploy APIs/Backends using REST, GraphQL and gRPC",
+      "Experience with Firebase and other BaaS platforms such as Supabase, appwrite and nhost",
+    ],
+  },
+  {
+    title: "Devops engineer",
+    items: [
+      "Experience with creating CI/CD pipelines for various apps",
+      "Used third party tools such as CircleCI and Github Actions for creating said CI/CD pipelines",
+      "Hands-on experience with docker including building and deploying containerized applications",
+      "Good knowledge of shell scripting and experience with linux/unix systems",
+      "Used Ansible, Chef, Terraform and other build and automation tools",
+    ],
+  },
+  {
+    title: "Cloud engineer",
+    items: [
+      "Experience with services offered on GCP and AWS",
+      "Ability to deploy applications on platforms such as App Engine, Cloud Run, GKS or manually run on EC2 or GCS servers",
+      "Used GCP Machine learning platforms to train, build and deploy ML models and applications",
+      "Knowledge of IAM roles and how to manage cloud infrastructure securely",
+    ],
+  },
+  {
+    title: "Machine learning engineer",
+    items: [
+      "Able to train and deploy anything from simple binary classification models to multi-class classification models",
+      "Experience with tools such as numpy, pandas, Jupyter etc. and frameworks such as Tensorflow, Keras, FastAI to create Deep learning models.",
+      "Built and deployed a production-ready machine learning model served over Google Cloud Run",
+      "Experience with Tensorflow.js to create models that run in-browser",
+      "Currently exploring the wonderful world of Generative Adversarial Networks",
+    ],
+  },
+  {
+    title: "App development",
+    items: [
+      "Experience with creating both mobile and desktop applications",
+      "Used React native to build and deploy cross platform mobile applications, with and without the expo library.",
+      "Knowledge of and experience with Flutter for creating perfomant cross platform apps",
+      "I can code in Java for native development but prefer not to. Too much boilerplate for my tastes.",
+      "Created desktop apps with Qt, Electron and Fyne",
+    ],
+  },
+  {
+    title: "3D, CG & Film",
+    items: [
+      "Used Blender 3D to model and animate and immediately fell in love with it.",
+      "Currently learning Houdini and Nuke for complex simulations and compositing respectively.",
+      "Huge film-making enthuthiast. From writing scripts, to acting, directing, producing and editing ",
+    ],
+  },
+  {
+    title: "Misclenneaous",
+    items: [
+      "Physics research spanning from quantum physics to theoretical physics in the pursuit of a Grand-Unification Theory",
+      "Polyglot programmer with experience using Javascript, Python, Golang, Rust, Dart, Elixir, Rails, php and Java",
+      "Played around with DAW and digital music production but nothing too serious",
+    ],
+  },
+];
+---
+
+<main class="grid grid-cols-1 md:grid-cols-2 gap-8 my-8">
+  {
+    skills.map((skill, idx) => {
+      const icons = [
+        <CodeBracketIcon className="h-20 w-20 my-3 text-red-400" />,
+        <ServerIcon className="h-20 w-20 my-3 text-green-400" />,
+        <CommandLineIcon className="h-20 w-20 my-3 text-cyan-400" />,
+        <CloudIcon className="h-20 w-20 my-3 text-orange-400" />,
+        <ComputerDesktopIcon className="h-20 w-20 my-3 text-pink-400" />,
+        <DevicePhoneMobileIcon className="h-20 w-20 my-3 text-yellow-400" />,
+        <CogIcon className="h-20 w-20 my-3 text-purple-400" />,
+        <RocketLaunchIcon className="h-20 w-20 my-3" />,
+      ];
+      let icon = idx > icons.length ? icons[icons.length - 1] : icons[idx];
+      return (
+        <div class="flex flex-col gap-3 ring-1 ring-black/10 dark:ring-white/10 rounded-lg p-5">
+          <div class="flex items-center justify-center gap-5 flex-col">
+            {icon}
+            <span class="text-3xl">{skill.title}</span>
+          </div>
+          <div class="">
+            {skill.items.map((i) => (
+              <div class="p-3 inline-flex gap-3 items-center">
+                <div class="w-[5%]">
+                  <CheckCircleIcon className="h-full w-full text-green-500" />
+                </div>
+                <div class="w-[95%]">
+                  <span>{i}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    })
+  }
+</main>
