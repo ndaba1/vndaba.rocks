@@ -1,14 +1,17 @@
 import clsx from "clsx";
-import { GitHubIcon, InstagramIcon, LinkedInIcon, TwitterIcon } from "./SocialIcons";
+import { GitHubIcon, InstagramIcon, LinkedInIcon, TwitterIcon } from "./Icons";
 
-interface SLProps {
+export function SocialLink({
+  className,
+  href,
+  children,
+  icon: Icon,
+}: {
   className?: string;
   href?: string;
   children?: any;
   icon: any;
-}
-
-export function SocialLink({ className, href, children, icon: Icon }: SLProps) {
+}) {
   return (
     <li className={clsx(className, "flex")}>
       <a
