@@ -1,0 +1,27 @@
+---
+import { FolderIcon, RocketLaunchIcon } from "@heroicons/react/20/solid";
+
+const { title, icon = "folder" } = Astro.props as { title: string; icon: "folder" | "rocket" };
+---
+
+{
+  () => {
+    const icons = {
+      folder: <FolderIcon className="h-5 w-5" />,
+      rocket: <RocketLaunchIcon className="h-5 w-5" />,
+    };
+    return (
+      <section class="p-1">
+        <div class="flex gap-3 items-center ">
+          {icons[icon]}
+          <span class="text-xl text-zinc-800 dark:text-zinc-100">{title}</span>
+        </div>
+        <div class="px-1">
+          <div class="m-1 border-l border-gray-300 dark:border-gray-600 py-1 px-5 text-zinc-600 dark:text-zinc-400 ">
+            <slot />
+          </div>
+        </div>
+      </section>
+    );
+  }
+}
