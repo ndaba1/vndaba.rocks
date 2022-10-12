@@ -1,7 +1,8 @@
 ---
 import { Image } from "@astrojs/image/components";
-import avatar from "../images/avatar.jpg";
-import { GitHubIcon, SunIcon } from "./Icons";
+import avatar from "~/images/avatar.jpg";
+import { GitHubIcon, MoonIcon, SunIcon } from "./Icons";
+import { MobileNavigation } from "./MobileNavigation";
 import NavItem from "./NavLink.astro";
 ---
 
@@ -24,7 +25,8 @@ import NavItem from "./NavLink.astro";
       <NavItem href="/uses">Uses</NavItem>
     </div>
     <div class="flex items-center space-x-8">
-      <a href="https://github.com/ndaba1" class="cursor-pointer" target="_blank">
+      <MobileNavigation client:visible className="pointer-events-auto md:hidden" />
+      <a href="https://github.com/ndaba1" class="cursor-pointer hidden md:block" target="_blank">
         <GitHubIcon className="w-11 h-11 fill-black dark:fill-white" />
       </a>
       <button
@@ -32,7 +34,8 @@ import NavItem from "./NavLink.astro";
         data-aw-toggle-color-scheme
         class="ring-2 ring-zinc-200 hover:ring-4 cursor-pointer dark:ring-white/20 rounded-xl p-2 relative"
       >
-        <SunIcon className="w-6 h-6 stroke-black fill-white dark:stroke-white dark:fill-black" />
+        <SunIcon className="hidden dark:block w-6 h-6 stroke-black fill-white dark:stroke-white dark:fill-black" />
+        <MoonIcon className="dark:hidden w-6 h-6 stroke-black fill-white dark:stroke-white dark:fill-black" />
       </button>
     </div>
   </div>
