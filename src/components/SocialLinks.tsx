@@ -39,16 +39,16 @@ function MailIcon(props: any) {
 export default function SocialLinks() {
   return (
     <div>
-      <SocialLink href="#" icon={TwitterIcon}>
+      <SocialLink href="https://twitter.com/mwangindaba" icon={TwitterIcon}>
         Follow on Twitter
       </SocialLink>
-      <SocialLink href="#" icon={InstagramIcon} className="mt-4">
+      <SocialLink href="https://www.instagram.com/_vndaba" icon={InstagramIcon} className="mt-4">
         Follow on Instagram
       </SocialLink>
-      <SocialLink href="#" icon={GitHubIcon} className="mt-4">
+      <SocialLink href="https://www.github.com/ndaba1" icon={GitHubIcon} className="mt-4">
         Follow on GitHub
       </SocialLink>
-      <SocialLink href="#" icon={LinkedInIcon} className="mt-4">
+      <SocialLink href="https://www.linkedin.com/in/victor-m-ndaba-4310401a7/" icon={LinkedInIcon} className="mt-4">
         Follow on LinkedIn
       </SocialLink>
       <SocialLink
