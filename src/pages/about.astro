@@ -1,10 +1,11 @@
 ---
 import { Image } from "@astrojs/image/components";
-import Container from "../components/Container.astro";
-import Items from "../components/Items";
-import SocialLinks from "../components/SocialLinks";
-import Portrait from "../images/headshot.jpg";
-import MainLayout from "../layouts/MainLayout.astro";
+import Block from "~/components/Block.astro";
+import Container from "~/components/Container.astro";
+import Items from "~/components/Items";
+import SocialLinks from "~/components/SocialLinks";
+import Portrait from "~/images/headshot.jpg";
+import MainLayout from "~/layouts/MainLayout.astro";
 ---
 
 <MainLayout>
@@ -22,39 +23,39 @@ import MainLayout from "../layouts/MainLayout.astro";
       </div>
       <div class="lg:order-first lg:row-span-2">
         <h1 class="text-5xl font-bold text-zinc-800 dark:text-zinc-100">Hi, I'm Victor Ndaba.</h1>
-        <Items client:load />
+        <Items client:only="react" />
         <div class="mt-6 space-y-7 text-lg text-zinc-600 dark:text-zinc-400">
-          <p>
+          <Block title="Who am I?">
             I'm from Kenya and I am a nerd! I love to code. I love talking and researching about physics. I love
             listening to music. I love movies and tv shows. I love pretty much all the nerdy things, what I would refer
             to as <span>nerdology</span>
-          </p>
-          <p>
+          </Block>
+          <Block title="What do I do?">
             I have been programming for almost 3 years now and it's what I do with majority of my time. I started out as
             a web developer, playing around with Javascript frameworks like react, vue & angular, found my way into
             Node.js and backend development, then I heard somewhere about this cool language called Rust, picked up
             python and golang along the way... and some more other stuff and now I'm a very passionate and proficient
             developer. From web development with pretty much any framework, to cross platform app development with
             Flutter and React Native, to machine learning, I know a thing or two about programming.
-          </p>
-          <p>
+          </Block>
+          <Block title="My love for physics">
             For as long as I can remember, I have always had this deep passion for physics. It's very elegant and
             beautiful. I am particularly intrigued by the works of figures like Newton, James Clerk Maxwell, Einstein...
             in short, anything pertaining to Gravity, or a quantum theory of gravity. I do some physics research now and
             then for a paper I'm working on and as for my subscription when it comes to quantum mechanics
             interpretations, I would have to choose Pilot Wave theory, or moreso, a modified version of it.
-          </p>
-          <p>
+          </Block>
+          <Block title="Music, medicine for the soul">
             From Bon Jovi to The Weeknd, I like all sorts of music. I've played around with FL Studio and other DAWs,
             but nothing that serious, maybe someday. I'm a hardcore MCU fan and like other stuff such as GOT, Stranger
             things, HIMYM. Did I say like? I meant obsessed with them. These are some of the stuff I do in my leisure
             alongside playing around with 3D sofware mostly Blender, Houdini and Nuke.
-          </p>
-          <p>
+          </Block>
+          <Block title="What am I upto?">
             Today, I’m the founder of a small startup called Digitalfarmer, where we’re working on creating
             technological solutions to help farmers around Africa. I'm also working on other projects such as Fefa
             Academy: a free online academy, Backframe: a simple BaaS solution, and much more.
-          </p>
+          </Block>
         </div>
       </div>
       <div class="lg:pl-20">
