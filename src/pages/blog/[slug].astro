@@ -1,8 +1,8 @@
 ---
-import Container from "../../components/Container.astro";
-import MainLayout from "../../layouts/MainLayout.astro";
+import Container from "~/components/Container.astro";
+import MainLayout from "~/layouts/MainLayout.astro";
 export async function getStaticPaths() {
-  const posts = await Astro.glob("../../blogs/**/*.mdx");
+  const posts = await Astro.glob("~/blogs/**/*.mdx");
 
   return posts.map((post) => ({
     params: {
@@ -18,7 +18,7 @@ const { Content, frontmatter } = Astro.props.post;
 ---
 
 <MainLayout>
-  <Container>
+  <Container class="max-w-5xl">
     <div class="flex flex-col space-y-3">
       <a href="/blog">Go Back</a>
       <h1 class="capitalize">{frontmatter.title}</h1>
@@ -29,9 +29,7 @@ const { Content, frontmatter } = Astro.props.post;
         <span>Tags:</span>
         {
           frontmatter.tags.map((i: string) => (
-            <span class="text-sm bg-green-300 dark:bg-green-600/30 rounded-3xl px-2">
-              #{i}
-            </span>
+            <span class="text-sm bg-green-300 dark:bg-green-600/30 rounded-3xl px-2">#{i}</span>
           ))
         }
       </div>
