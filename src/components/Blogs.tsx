@@ -1,9 +1,11 @@
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { LinkIcon } from "@heroicons/react/20/solid/index";
 import type { MDXInstance } from "astro";
 import { useState } from "react";
 
 export function BlogsBody({ content }: { content: MDXInstance<Record<string, any>>[] }) {
   const [blogs, setBlogs] = useState(content);
+  const [listRef] = useAutoAnimate();
 
   const handleChange = (e: any) => {
     const query = (e.target as HTMLInputElement).value.toLowerCase();
@@ -30,7 +32,7 @@ export function BlogsBody({ content }: { content: MDXInstance<Record<string, any
           onChange={handleChange}
         />
       </div>
-      <section className="!mt-10 grid gap-6 grid-cols-1 md:grid-cols-3">
+      <section className="!mt-10 grid gap-6 grid-cols-1 md:grid-cols-3" ref={listRef}>
         {blogs.map((b: any, idx) => {
           return (
             <a href={`/blog/${b.frontmatter.slug}`} key={idx}>
@@ -53,6 +55,13 @@ export function BlogsBody({ content }: { content: MDXInstance<Record<string, any
           );
         })}
       </section>
+      {!blogs.length && (
+        <div className="my-10 flex items-center justify-center text-center dimmed text-2xl">
+          <span className="max-w-xl">
+            No blog posts could be found with a slug, title or tag matching the provided search value
+          </span>
+        </div>
+      )}
     </div>
   );
 }
