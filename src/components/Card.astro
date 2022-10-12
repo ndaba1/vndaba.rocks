@@ -1,6 +1,6 @@
 ---
 import { Image } from "@astrojs/image/components";
-import LinkIcon from "@astropub/icons/Link2";
+import { LinkIcon } from "@heroicons/react/20/solid/index";
 
 export interface Props {
   title: string;
@@ -19,23 +19,13 @@ const props = Astro.props as Props;
   <div
     class="rounded-lg space-y-4 cursor-pointer text-zinc-800 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-700/30 p-5 ring-1 ring-zinc-100 dark:ring-zinc-300/10 hover:shadow-lg group transition relative"
   >
-    <Image
-      src={props.image}
-      alt="imagerrr"
-      width={48}
-      height={48}
-      formats={["avif", "webp"]}
-    />
+    <Image src={props.image} alt="imagerrr" width={48} height={48} formats={["avif", "webp"]} />
 
     <div class="absolute top-0 right-5">
       <div class="flex flex-row space-x-2">
         {
           props.tags?.map((tag, index) => (
-            <span
-              class={`text-xs font-medium px-2 py-1 rounded-full ${props.tagsColors?.[index]}`}
-            >
-              {tag}
-            </span>
+            <span class={`text-xs font-medium px-2 py-1 rounded-full ${props.tagsColors?.[index]}`}>{tag}</span>
           ))
         }
       </div>
@@ -47,7 +37,7 @@ const props = Astro.props as Props;
     </p>
 
     <div class="flex items-center group-hover:text-teal-600">
-      <LinkIcon class="mr-2" size={20} />
+      <LinkIcon className="mr-2 h-5 w-5" />
       <span class="font-medium">{props.linkText}</span>
     </div>
   </div>
