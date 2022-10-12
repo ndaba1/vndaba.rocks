@@ -1,21 +1,19 @@
 ---
-import NavItem from "./NavItem";
+import NavItem from "./NavLink.astro";
 ---
 
 <footer class="mt-10 mx-auto max-w-6xl">
-	<div
-		class="border-t border-zinc-100 pt-10 pb-16 dark:border-zinc-700/40 p-5 md:px-10"
-	>
-		<div class="flex flex-col items-center justify-between gap-6 sm:flex-row">
-			<div class="flex text-sm font-medium text-zinc-800 dark:text-zinc-200">
-				<NavItem href="/">Home</NavItem>
-				<NavItem href="/about">About</NavItem>
-				<NavItem href="/projects">Projects</NavItem>
-				<NavItem href="/uses">Uses</NavItem>
-			</div>
-			<p class="text-sm text-zinc-400 dark:text-zinc-500">
-				&copy; {new Date().getFullYear()} Victor Ndaba. All rights reserved.
-			</p>
-		</div>
-	</div>
+  <div class="border-t border-zinc-100 pt-10 pb-16 dark:border-zinc-700/40 p-5 md:px-10">
+    <div class="flex flex-col items-center justify-between gap-6 sm:flex-row">
+      <div class="flex text-sm font-medium text-zinc-800 dark:text-zinc-200">
+        <NavItem href="/">Home</NavItem>
+        <NavItem href="/about">About</NavItem>
+        <NavItem href="/projects">Projects</NavItem>
+        <NavItem href="/uses">Uses</NavItem>
+      </div>
+      <p class="text-sm text-zinc-400 dark:text-zinc-500">
+        &copy; {new Date().getFullYear()} Victor Ndaba. All rights reserved.
+      </p>
+    </div>
+  </div>
 </footer>
