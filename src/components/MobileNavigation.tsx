@@ -1,7 +1,6 @@
 import { Popover, Transition } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { Fragment } from "react";
-import { CloseIcon } from "./Icons";
+import { ChevronDownIcon, CloseIcon } from "./Icons";
 
 function MobileNavItem({ href, children }: any) {
   return (
