@@ -1,8 +1,8 @@
 ---
-import CirclePlus from "@astropub/icons/PlusCircled";
-import Card from "../components/Card.astro";
-import Container from "../components/Container.astro";
-import MainLayout from "../layouts/MainLayout.astro";
+import { PlusCircleIcon } from "@heroicons/react/20/solid/index";
+import Card from "~/components/Card.astro";
+import Container from "~/components/Container.astro";
+import MainLayout from "~/layouts/MainLayout.astro";
 
 const projects = [
   {
@@ -23,10 +23,7 @@ const projects = [
     image: "/images/class.png",
     linkText: "fefaacademy.me",
     tags: ["academy", "wip"],
-    tagsColors: [
-      "bg-blue-500 dark:bg-orange-400/30",
-      "bg-red-500 dark:bg-red-400/30",
-    ],
+    tagsColors: ["bg-blue-500 dark:bg-orange-400/30", "bg-red-500 dark:bg-red-400/30"],
   },
   {
     title: "Daraja Sdks",
@@ -46,10 +43,7 @@ const projects = [
     image: "/images/blender.png",
     linkText: "github.com",
     tags: ["blender", "wip"],
-    tagsColors: [
-      "bg-yellow-500 dark:bg-yellow-400/30",
-      "bg-red-500 dark:bg-red-400/30",
-    ],
+    tagsColors: ["bg-yellow-500 dark:bg-yellow-400/30", "bg-red-500 dark:bg-red-400/30"],
   },
   {
     title: "Cmder",
@@ -67,26 +61,19 @@ const projects = [
 <MainLayout>
   <Container>
     <section class="md:w-3/4">
-      <h1
-        class="text-zinc-900 dark:text-zinc-100 text-5xl font-bold leading-snug"
-      >
-        Things that I have made trying to <span
-          class="cursor-pointer flex items-center hover:opacity-80"
-          >make the world a better place
+      <h1 class="text-zinc-900 dark:text-zinc-100 text-5xl font-bold leading-snug">
+        Things that I have made trying to <span class="cursor-pointer flex items-center hover:opacity-80"
+          >"make the world a better place"
         </span>
       </h1>
       <p class="mt-3 text-lg text-zinc-600 dark:text-zinc-400">
-        I have a ton of interests, and I like to try invest myself in all of
-        them. I have a deep passion for <span class="font-bold text-teal-500"
-          >physics</span
+        I have a ton of interests, and I like to try invest myself in all of them. I have a deep passion for <span
+          class="font-bold text-teal-500">physics</span
         > and do some research in the field. I also like to <span>write</span> and
-        <span class="font-bold text-teal-500">code</span>. I have a lot of
-        ideas, and I like to make things. I would be remiss if I failed to
-        mention how much I like <span class="font-bold text-teal-500"
-          >blender</span
-        >
-        and often dabble in CG. Here are some of the things I have worked or am working
-        on. Feel free to check them out and perhaps even contribute where you can.
+        <span class="font-bold text-teal-500">code</span>. I have a lot of ideas, and I like to make things. I would be
+        remiss if I failed to mention how much I like <span class="font-bold text-teal-500">blender</span>
+        and often dabble in CG. Here are some of the things I have worked or am working on. Feel free to check them out and
+        perhaps even contribute where you can.
       </p>
     </section>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 my-10">
@@ -107,7 +94,7 @@ const projects = [
         <div
           class="rounded-lg !h-full space-y-4 cursor-pointer text-yellow-800 dark:text-yellow-400/70 bg-zinc-300 dark:bg-zinc-700/30 p-5 ring-1 ring-zinc-100 dark:ring-zinc-300/10 shadow-lg group transition flex items-center justify-center flex-col hover:ring-4"
         >
-          <CirclePlus size={60} />
+          <PlusCircleIcon className="h-16 w-16" />
           <span class="text-xl">Explore more projects on github</span>
         </div>
       </a>
