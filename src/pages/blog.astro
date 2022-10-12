@@ -1,53 +1,22 @@
 ---
-import LinkIcon from "@astropub/icons/Link2";
-import Container from "../components/Container.astro";
-import MainLayout from "../layouts/MainLayout.astro";
+import { BlogsBody } from "~/components/Blogs";
+import Container from "~/components/Container.astro";
+import MainLayout from "~/layouts/MainLayout.astro";
 
-const blogs = await Astro.glob("../blogs/**/*.mdx");
+let blogs = await Astro.glob("~/blogs/**/*.mdx");
+blogs = blogs.sort((a, b) => new Date(a.frontmatter.date).getDate() - new Date(b.frontmatter.date).getDate());
 ---
 
 <MainLayout>
   <Container>
     <div class="md:w-3/4">
-      <h1 class="leading-tight mb-4">
-        Blogs on Software development, UI Design, CG & 3D, and then some...
-      </h1>
-      <p class="dimmed leading-normal text-lg">
-        I love writing about things I'm passionate about. I write primarily
-        about software development in general, anything from frontend frameworks
-        to backend development, machine learning and programming in general. I
-        may occassionaly thrown in a blog or two about UI Design, blender and
-        houdini and even shows! Enjoy...
+      <h1 class="leading-tight mb-4">Blogs on Software development, UI Design, CG & 3D, and then some...</h1>
+      <p class="dimmed leading-normal text-lg mb-5">
+        I love writing about things I'm passionate about. I write primarily about software development in general,
+        anything from frontend frameworks to backend development, machine learning and programming in general. I may
+        occassionaly thrown in a blog or two about UI Design, blender and houdini and even shows! Enjoy...
       </p>
     </div>
-    <section class="!mt-10 grid gap-6 grid-cols-1 md:grid-cols-3">
-      {
-        blogs.map((b) => {
-          return (
-            <a href={`/blog/${b.frontmatter.slug}`}>
-              <div class="rounded-lg space-y-4 cursor-pointer text-zinc-800 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-700/30 p-5 ring-1 ring-zinc-100 dark:ring-zinc-300/10 hover:shadow-lg group transition relative">
-                <span class="line-clamp-1 font-medium !text-2xl">
-                  {b.frontmatter.title}
-                </span>
-                <p class="dimmed line-clamp-4 text-lg">
-                  {b.frontmatter.excerpt}
-                </p>
-                <div class="flex items-center gap-3">
-                  {b.frontmatter.tags.map((i: string) => (
-                    <span class="text-sm bg-green-300 dark:bg-green-600/30 rounded-3xl px-2">
-                      #{i}
-                    </span>
-                  ))}
-                </div>
-                <div class="flex items-center group-hover:text-teal-600">
-                  <LinkIcon class="mr-2" size={20} />
-                  <span class="font-medium">Read more</span>
-                </div>
-              </div>
-            </a>
-          );
-        })
-      }
-    </section>
+    <BlogsBody content={blogs} client:load />
   </Container>
 </MainLayout>
