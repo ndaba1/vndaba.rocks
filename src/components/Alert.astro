@@ -1,0 +1,16 @@
+---
+const { variant = "warn" } = Astro.props as { class: string; variant: "warn" | "danger" | "info" };
+
+const variantStyles = {
+  warn: "text-yellow-500/90 bg-yellow-500/20",
+  danger: "text-red-500/90 bg-red-500/20",
+  info: "text-cyan-500/90 bg-cyan-500/20",
+};
+---
+
+<div class={`p-5 rounded-md ${variantStyles[variant]}`}>
+  <p class="flex">
+    <span class="font-bold uppercase">NOTE:</span>
+    <slot />
+  </p>
+</div>
