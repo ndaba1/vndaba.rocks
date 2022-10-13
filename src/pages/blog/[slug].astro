@@ -1,4 +1,5 @@
 ---
+import { ChevronLeftIcon } from "@heroicons/react/20/solid/index";
 import Container from "~/components/Container.astro";
 import MainLayout from "~/layouts/MainLayout.astro";
 export async function getStaticPaths() {
@@ -18,9 +19,14 @@ const { Content, frontmatter } = Astro.props.post;
 ---
 
 <MainLayout title={frontmatter.title} description={frontmatter.excerpt}>
-  <Container class="max-w-5xl">
+  <Container class="max-w-4xl">
     <div class="flex flex-col space-y-3">
-      <a href="/blog">Go Back</a>
+      <a href="/blog">
+        <button class="inline-flex gap-1 text-lg">
+          <ChevronLeftIcon className="h-6" />
+          Back to blogs
+        </button>
+      </a>
       <h1 class="capitalize">{frontmatter.title}</h1>
       <h5 class="dimmed">
         By Victor Ndaba, {new Date(frontmatter.date).toLocaleDateString()}
