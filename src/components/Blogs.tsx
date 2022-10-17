@@ -10,7 +10,7 @@ export function BlogsBody({ content }: { content: MDXInstance<Record<string, any
   const handleChange = (e: any) => {
     const query = (e.target as HTMLInputElement).value.toLowerCase();
     if (query.trim().length) {
-      const results = blogs.filter((b) => {
+      const results = content.filter((b) => {
         const tags: string[] = b.frontmatter.tags;
         if (tags.some((t) => t.toLowerCase().includes(query))) return true;
         if (b.frontmatter.title.toLowerCase().includes(query)) return true;
