@@ -1,16 +1,20 @@
 ---
-const { variant = "warn" } = Astro.props as { class: string; variant: "warn" | "danger" | "info" };
+const { variant = "warn", title = "NOTE" } = Astro.props as {
+  class: string;
+  variant: "warn" | "danger" | "info";
+  title: string;
+};
 
 const variantStyles = {
-  warn: "text-yellow-500/90 bg-yellow-500/20",
-  danger: "text-red-500/90 bg-red-500/20",
-  info: "text-cyan-500/90 bg-cyan-500/20",
+  warn: "dark:text-yellow-500/90 dark:bg-yellow-500/20 text-yellow-600 bg-yellow-500/40",
+  danger: "dark:text-red-500/90 dark:bg-red-500/20 text-red-600 bg-red-500/40",
+  info: "dark:text-cyan-500/90 dark:bg-cyan-500/20 text-cyan-600 bg-cyan-500/40",
 };
 ---
 
 <div class={`p-5 rounded-md ${variantStyles[variant]}`}>
   <p class="flex">
-    <span class="font-bold uppercase">NOTE:</span>
+    <span class="font-bold uppercase">{title}:</span>
     <slot />
   </p>
 </div>
