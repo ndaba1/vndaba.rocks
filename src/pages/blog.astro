@@ -4,7 +4,8 @@ import Container from "~/components/Container.astro";
 import MainLayout from "~/layouts/MainLayout.astro";
 
 let blogs = await Astro.glob("~/blogs/**/*.mdx");
-blogs = blogs.sort((a, b) => new Date(a.frontmatter.date).getDate() - new Date(b.frontmatter.date).getDate());
+// @ts-ignore
+blogs = blogs.sort((a, b) => new Date(b.frontmatter.date) - new Date(a.frontmatter.date));
 ---
 
 <MainLayout
