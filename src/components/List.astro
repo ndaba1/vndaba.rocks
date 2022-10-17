@@ -1,0 +1,7 @@
+---
+const { items } = Astro.props;
+---
+
+<ul class="list-decimal px-6">
+  {items.map((i: string) => <li>{i}</li>)}
+</ul>
