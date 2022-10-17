@@ -1,6 +1,7 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+@import "./prism.css";
 
 @font-face {
   font-family: "IBMPlexSans";
@@ -13,7 +14,7 @@
 @font-face {
   font-family: "IBMPlexSans";
   src: url(/fonts/ibm-plex-sans-var.woff2) format("woff2");
-  font-weight: 400;
+  font-weight: 100 400 500 600 700;
   font-style: normal;
   font-display: swap;
 }
@@ -21,6 +22,14 @@
 @layer base {
   h1 {
     @apply text-4xl sm:text-5xl font-bold;
+  }
+
+  h2 {
+    @apply text-3xl sm:text-4xl font-semibold;
+  }
+
+  h3 {
+    @apply text-xl sm:text-2xl font-medium;
   }
 
   .dimmed {
