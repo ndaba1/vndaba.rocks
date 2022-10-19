@@ -2,6 +2,337 @@
 title: "A Primer into Bash scripting"
 slug: "primer-into-bash-scripting"
 tags: ["bash", "scripting"]
-excerpt: Understanding how to write bash scripts can come in pretty handy especially if you're a Devops engineer or someone who deals with linux servers at some point of their work. This article is a quick primer into bash scripting
-date: 2023-10-11
+excerpt: Knowing how to write bash scripts is a skill that can come in handy if you do anything that requires a significant amount of automation. And not just bash scripts, even scripting in Powershell or windows batch scripts can prove useful.
+date: 2022-10-17
 ---
+
+import Alert from "~/components/Alert.astro";
+import List from "~/components/List.astro";
+
+<Alert title="requirements">
+  To follow along with this blog post, you will need:
+  <List
+    items={[
+      "Bash installed on your system",
+      "Basic understanding of git and some bash commands",
+      "A can do attitude and general learning interest",
+    ]}
+  />
+</Alert>
+
+Knowing how to write bash scripts is a skill that can come in handy if you do anything that requires a significant amount of automation. And not just bash scripts, even scripting in Powershell or windows batch scripts can prove useful. Usually, these are things that are learned by devops engineers but even if you are a web developer, you ought to know how to do so. After all, there ain't no such thing as too much knowledge.
+
+Recently, at the beginning of this year, I decided to go on a 365 day streak on github. I found that I needed to know how many commits I had made per day without necessarily checking my [github wall]("https://github.com/ndaba1"). My first instinct was to create a tool in Rust that would help me achieve this and much more, it was meant to be a wrapper around git but I soon realized that was overkill and a few simple bash scripts would do the job just fine. In this blog, we are going to explore bash scripting while we write scripts that can be used to:
+
+- Count the number of commits in a single repository
+- Track every repository on your computer and run common git commands across all of them
+  By the end of it, you will have a good understanding of variables, loops, functions and general bash knowledge.
+
+## Part 1: Commit counter
+
+A commit counter script shouldn't be too difficult to write. Git already does most of the work for us by storing every commit you've ever made in the logs. You can view this logs by running `git log`. This, coupled with the unix philosophy of "Do one thing and do it really well" will turn out quite handy for us. Each commit in the git logs has a `Date` property as seen below
+
+TODO: Insert git logs image
+
+Knowing this, the only thing we'd have to do is find a way to count all the appearances of the `Date` word and by doing so, we will have effectively counted all the commits in the repository. But that isn't what we want, not really. We need a way to count only the commits made on the current date. Now, as usual, there are many different ways to achieve this. We are going to explore a couple of ways.
+
+`Git` is a tool that has a plethora of commands and numerous different ways of running them. The problem we are facing is that we need to scan the git logs for every commit matching the current day/date. This sound easy enough: we can use the `date` command for that. Unix systems were made to be composable and the concept of `piping` commands into each other is not a new one. If you've had some experience with Unix/Linux, you are probably thinking of a way to combine `grep`, `date`, `wc` and `git` commands to achieve everything. If you have never heard of these tools before, running them with the `--help` flag should show you some helpful info but for more in depth details, you can use the `man` command to see the manual pages for these commands, i.e `man grep`.
+
+That being said, here's my explanations of what these tools do and how they can help our cause:
+
+- `grep` - This is a tool used for advanced pattern matching. For our purposes, we can use it to "scan" for dates in the git logs.
+- `date` - Simply returns the current date-time. It can be manipulated to return the dates in different formats.
+- `wc` - Means word count and is used to count words or lines in a body of text. After "grepping" for the current day's commits, we can use `wc` to count the number of lines, ergo, the number of commits.
+
+But talk is cheap, show me the code. The best way to learn is to just do it and if things break, try to fix them. We can now go ahead and run the following command to see if our task is achieved.
+
+```bash
+git log | grep "$(date)" | wc -l
+```
+
+This command is interpreted as follows. First, run `git log` and from the logs collected by git, use that as input into the `grep` command. And since grep needs to know what it's actually scanning for, we pass in the `date` command, wrapping the command in "$( )" tells bash to execute the command before passing it to grep, therefore, grep gets the current date and not the word 'date'. Finnaly, grep will find every occurrence of the date and pass it to `wc` which in turn counts every line and returns a final number to us. However, if you try to run this command as it is, you will get 0 as your result even if you have actual commits in the current repository.
+
+<span class="text-red-400">TODO: Git log image difference</span>
+
+The problem is that, `git log` and `date` use different date formats, at least in their default states. We need a way to reconcile this difference. We can do so by passing arguments to either of the tools. To do so, we need to understand different date formatting commands. These are explained in great detail in the help section of the `date` command.
+
+The easiest way to reconcile this difference is to tell the `date` command to format the dates differently. We can do this by passing arguments to it in the following way.
+
+```bash
+date +"%a %b %d"
+```
+
+This "tells" the command to only provide us with the day("%a"), month("%b") and date("%d"). We need to add one more thing to account for one difference. For dates that have one digit, the command appends a zero to the front of the digit but git does not do this. This is known as padding and we need to instruct the `date` command not to use padding. We do this by adding a hyphen to the "%d" specifier. All these details are in the manual pages for the date command. With this, we can now re-compose our earlier command as follows:
+
+```bash
+git log | grep "$(date +'%a %b %-d')" | wc -l
+```
+
+And voila! The script should now run successully. Go ahead and save this command in a file named `commit_counter.sh` in your home directory. Now, whenever you want to know how many commits you've made today. you can simply run
+
+```bash
+~/commit_counter.sh
+```
+
+TODO: Enter screenshot of my commit-counter
+
+This was the easy part, we still need to find a way to run this command accross every repository on your computer to truly know how many commits you've made. Let's tackle this next.
+
+## Part 2: Commit cop
+
+For the "commit cop", we need a way to:
+
+- Track repositories on the device in a file
+- Add a new repository to the file but only if it doesn't already exist
+- Iterate over every repository and run various git commands across them.
+
+All this shouldn't be too difficult. First, create a file in your home directory that will be used to store every tracked repository. You can name it anything, but for our purposes, we'll name it `.my_repos`. It doesn't need to have a file extension.
+
+```bash
+touch ~/.my_repos
+```
+
+Now, we don't want to have to add repositories to this file manually. Ideally, we should be able to run `~/commit-cop.sh add` and this command should add the current working directory to the file but only if it doesnt exist. Let's get started, create a file named `commit-cop.sh` in your home directory and open it in an editor.
+
+We need a way to tell if the argument passed to the commit cop corresponds to add to know if we need to add a directory. We can do this by using if statements.
+
+### If statements:
+
+An if statement in bash is structured in the following way:
+
+```bash
+val=2
+if [ $val -eq 1 ]; then
+	# do something
+elif [ $val -eq 2 ];then
+	# do something
+else
+	# do something else
+fi
+```
+
+<Alert variant="info">
+  <ul class="list-decimal px-6">
+    <li>Make sure there are spaces between the condition and the brackets, otherwise, your bash script won't run</li>
+    <li>
+      You may come accross statements that are enclosed in double brackets "[[ ]]". This goes back to the differences
+      between `bash` and `sh`. Basically, bash supports newer syntax but shell is limited to the older syntax.
+    </li>
+  </ul>
+</Alert>
+
+Moving on, we can start writing our script as follows:
+
+```bash
+#! /bin/bash
+
+if [ "$1" == "add" ]; then
+	echo "Adding directory $(pwd) to tracked repositories"
+else
+	echo "Doing something else"
+fi
+```
+
+The "$1" value is a placeholder for arguments passed to the bash script. The symbol "$" is what is used to denote variables in bash and the number 1 means that we are targetting the first argument. Therefore, "$2" would be the second argument and so on.
+
+Remember that we only want to add a directory if it doesn't already exist. Additionally, we can add a check to see if git is initialized in the directory since we only want to add directories that are initialized with git. We can do this by checking if the `.git` directory exists. But before we proceed, we shall first take a look at writing loops in bash.
+
+### For loops in bash:
+
+For loops in bash have the following syntax:
+
+```bash
+for item in items
+ do
+	echo $item
+ done
+```
+
+These loops will help us check if a directory is already tracked inside the `.my_repos` file. This can be achieved as follows:
+
+```bash
+#!/bin/bash
+
+for dir in $(cat ~/.my_repos)
+ do
+  if [ "$(pwd)" == "$dir" ];then
+		echo "FAILED. Directory $(pwd) is already tracked. Aborting..."
+		return
+	fi
+ done
+```
+
+The above script is interpreted as follows. Iterate over every directory listed in the `.my_repos` file. If any of the listed directories match the current working directory, which is obtained by running `pwd`, then echo a message and stop execution. Knowing this, now we can start composing our scripts.
+
+```bash
+#!/bin/bash
+
+if [ "$1" == "add" ];then
+	# Step 1: Check if git is initialized
+	if [ -d ".git" ];then
+		# Step 2: Check if already tracked
+		for dir in $(cat ~/.my_repos)
+		 do
+		 	if [ "$(pwd)" == "$dir" ];then
+				echo "FAILED. Directory $(pwd) is already tracked. Aborting..."
+				return
+			fi
+		 done
+		# Step 3: We're sure file has git and is not yet tracked
+		echo $(pwd) >> ~/.my_repos
+		echo "Successfully added directory $(pwd)"
+	else
+		echo "FAILED. Directory: $(pwd) is not initialized with git"
+	fi
+else
+	echo "Command $1 is not recognized"
+fi
+```
+
+Now, a lot of things are going on in this script. Most of them we've already seen before and are familiar with except the syntax in the second if statement to check whether the ".git" directory exists. This is a special syntax understood by bash to equate a condition to if or false.
+
+- `if [ -d ".git" ]` tells bash to check whether a .git directory exists in the current working dir.
+  There are other such specifiers such as:
+- `if [ 1 -eq 2 ]` checks whether two numbers are equal
+- `if [ 1 -neq 2 ]` checks whether values are unequal
+- `if [ -f "hello.txt"]` checks whether a file named "hello.txt" exists in the current dir.
+
+You will learn most of these "specifiers" as you write more bash scripts. There's no need in cramming all of them right now yet we won't put them into practice.
+
+Before Moving on, our code from above is starting to get really nested. It woudld be nice if we could extract some of the code into a function or something. Which is what we'll tackle next.
+
+### Functions in bash
+
+Functions in bash can be summarised as follows:
+
+```bash
+#!/bin/bash
+
+# function that doesn't take arguments
+function say_hello {
+	echo "Hello world"
+}
+
+# invoking the function
+say_hello
+
+# function with arguments
+function add_two_numbers {
+	echo "$1 + $2 is $(($1 + $2))"
+}
+
+# calling the function
+add_two_numbers 1 2
+```
+
+<Alert variant="info">
+  <ul class="list-decimal px-6">
+    <li>A function cannot be called before it has been defined</li>
+    <li>You may add parentheses after a function name in it's definition</li>
+    <li>Function arguments are denoted in the same way as arguments to a bash script. i.e $1, $2 etc...</li>
+    <li>When passing arguments to a function, the values are not comma separated. Only separated by spaces</li>
+    <li>
+      The $(( )) syntax is a special operator that is used to tell bash to equate a numeric expression and not simply
+      print it out
+    </li>
+  </ul>
+</Alert>
+
+We can now extract our logic for adding a directory into a separate function. Refactor your script as follows:
+
+```bash
+#!/bin/bash
+
+function add_dir {
+	# Step 1: Check if git is initialized
+	if [ -d ".git" ];then
+		# Step 2: Check if already tracked
+		for dir in $(cat ~/.my_repos)
+		 do
+		 	if [ "$(pwd)" == "$dir" ];then
+				echo "FAILED. Directory $(pwd) is already tracked. Aborting..."
+				return
+			fi
+		 done
+		# Step 3: We're sure file has git and is not yet tracked
+		echo $(pwd) >> ~/.my_repos
+		echo "Successfully added directory $(pwd)"
+	else
+		echo "FAILED. Directory: $(pwd) is not initialized with git"
+	fi
+}
+
+
+if [ "$1" == "add" ];then
+	add_dir
+else
+	echo "Command $1 is not recognized"
+fi
+```
+
+At this point, we've accomplished almost everything we wanted to do. All that's left is creating the functionality for iterating over the directories in the `.my_repos` file and counting the commits in each directory. This should be easy since we already created similar functionality in the Commit Counter section. We can create a new function `count_commits` as follows:
+
+```bash
+#!/bin/bash
+
+function count_commits {
+	TOTAL_COMMITS=0
+
+	for dir in $(cat ~/.my_repos)
+	 do
+	 	COMMITS=$(git log | grep "$(date +'%a %b %-d')" | wc -l)
+		echo "$COMMITS in $dir"
+		TOTAL_COMMITS=$(($TOTAL_COMMITS + $COMMITS))
+	 done
+	 echo "Today's total commits: $TOTAL_COMMITS"
+}
+```
+
+The above function simply iterates over the directories, counts the commits and adds them to the total then displays the total amount. With this, our commit-cop is done. Your final script should be as follows:
+
+### The final product
+
+```bash
+#!/bin/bash
+
+function add_dir {
+	# Step 1: Check if git is initialized
+	if [ -d ".git" ];then
+		# Step 2: Check if already tracked
+		for dir in $(cat ~/.my_repos)
+		 do
+		 	if [ "$(pwd)" == "$dir" ];then
+				echo "FAILED. Directory $(pwd) is already tracked. Aborting..."
+				return
+			fi
+		 done
+		# Step 3: We're sure file has git and is not yet tracked
+		echo $(pwd) >> ~/.my_repos
+		echo "Successfully added directory $(pwd)"
+	else
+		echo "FAILED. Directory: $(pwd) is not initialized with git"
+	fi
+}
+
+function count_commits {
+	TOTAL_COMMITS=0
+
+	for dir in $(cat ~/.my_repos)
+	 do
+	 	COMMITS=$(git log | grep "$(date +'%a %b %-d')" | wc -l)
+		echo "$COMMITS in $dir"
+		TOTAL_COMMITS=$(($TOTAL_COMMITS + $COMMITS))
+	 done
+	 echo "Today's total commits: $TOTAL_COMMITS"
+}
+
+if [ "$1" == "add" ];then
+	add_dir
+else
+	count_commits
+fi
+```
+
+## Conclusion
+
+Whew, we've covered quite a lot. But this was only just a primer. There is still a lot we haven't covered about bash scripting and the only way you'll discover it all is by scripting more and more. The next time you have something you think you can automate on your computer, go ahead and use bash. Personally, I believe that the only way to get better is by doing. Good luck! If you wish to see my versions of the commit_counter and commit-cop, you can find the scripts along with my other dotfiles on my github.
