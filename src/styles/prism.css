@@ -3,6 +3,7 @@ pre[class*="language-"] {
   border-radius: 5px;
   background-color: theme("colors.gray.900");
   padding: 8px;
+  word-wrap: normal !important;
 }
 
 code {
@@ -10,6 +11,7 @@ code {
   background-color: theme("colors.gray.900");
   padding: 0 4px;
   border-radius: 3px;
+  word-wrap: normal !important;
 }
 
 .token.tag,
