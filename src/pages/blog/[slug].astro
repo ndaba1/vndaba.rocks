@@ -2,6 +2,8 @@
 import { ChevronLeftIcon } from "@heroicons/react/20/solid/index";
 import Container from "~/components/Container.astro";
 import MainLayout from "~/layouts/MainLayout.astro";
+import "~/styles/mdx.css";
+
 export async function getStaticPaths() {
   const posts = await Astro.glob("~/blogs/**/*.mdx");
 
@@ -19,7 +21,7 @@ const { Content, frontmatter } = Astro.props.post;
 ---
 
 <MainLayout title={frontmatter.title} description={frontmatter.excerpt}>
-  <Container class="max-w-4xl">
+  <Container class="w-full max-w-4xl">
     <div class="flex flex-col space-y-3">
       <a href="/blog">
         <button class="inline-flex gap-1 text-lg">
