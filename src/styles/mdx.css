@@ -1,0 +1,9 @@
+ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+blockquote {
+  padding-left: 10px;
+  border-left: 3px solid blueviolet;
+}
