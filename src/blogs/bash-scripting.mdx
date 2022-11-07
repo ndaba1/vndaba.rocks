@@ -32,8 +32,6 @@ Recently, at the beginning of this year, I decided to go on a 365 day streak on 
 
 A commit counter script shouldn't be too difficult to write. Git already does most of the work for us by storing every commit you've ever made in the logs. You can view this logs by running `git log`. This, coupled with the unix philosophy of "Do one thing and do it really well" will turn out quite handy for us. Each commit in the git logs has a `Date` property as seen below
 
-TODO: Insert git logs image
-
 Knowing this, the only thing we'd have to do is find a way to count all the appearances of the `Date` word and by doing so, we will have effectively counted all the commits in the repository. But that isn't what we want, not really. We need a way to count only the commits made on the current date. Now, as usual, there are many different ways to achieve this. We are going to explore a couple of ways.
 
 `Git` is a tool that has a plethora of commands and numerous different ways of running them. The problem we are facing is that we need to scan the git logs for every commit matching the current day/date. This sound easy enough: we can use the `date` command for that. Unix systems were made to be composable and the concept of `piping` commands into each other is not a new one. If you've had some experience with Unix/Linux, you are probably thinking of a way to combine `grep`, `date`, `wc` and `git` commands to achieve everything. If you have never heard of these tools before, running them with the `--help` flag should show you some helpful info but for more in depth details, you can use the `man` command to see the manual pages for these commands, i.e `man grep`.
@@ -51,8 +49,6 @@ git log | grep "$(date)" | wc -l
 ```
 
 This command is interpreted as follows. First, run `git log` and from the logs collected by git, use that as input into the `grep` command. And since grep needs to know what it's actually scanning for, we pass in the `date` command, wrapping the command in "$( )" tells bash to execute the command before passing it to grep, therefore, grep gets the current date and not the word 'date'. Finnaly, grep will find every occurrence of the date and pass it to `wc` which in turn counts every line and returns a final number to us. However, if you try to run this command as it is, you will get 0 as your result even if you have actual commits in the current repository.
-
-<span class="text-red-400">TODO: Git log image difference</span>
 
 The problem is that, `git log` and `date` use different date formats, at least in their default states. We need a way to reconcile this difference. We can do so by passing arguments to either of the tools. To do so, we need to understand different date formatting commands. These are explained in great detail in the help section of the `date` command.
 
@@ -335,4 +331,4 @@ fi
 
 ## Conclusion
 
-Whew, we've covered quite a lot. But this was only just a primer. There is still a lot we haven't covered about bash scripting and the only way you'll discover it all is by scripting more and more. The next time you have something you think you can automate on your computer, go ahead and use bash. Personally, I believe that the only way to get better is by doing. Good luck! If you wish to see my versions of the commit_counter and commit-cop, you can find the scripts along with my other dotfiles on my github.
+Whew, we've covered quite a lot. But this was only just a primer. There is still a lot we haven't covered about bash scripting and the only way you'll discover it all is by scripting more and more. The next time you have something you think you can automate on your computer, go ahead and use bash. Personally, I believe that the only way to get better is by doing. Good luck! If you wish to see my versions of the commit_counter and commit-cop, you can find the scripts along with my other dotfiles on my [github](https://github.com/ndaba1/dotfiles).
