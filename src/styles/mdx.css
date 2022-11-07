@@ -7,3 +7,13 @@ blockquote {
   padding-left: 10px;
   border-left: 3px solid blueviolet;
 }
+
+code {
+  color: theme("colors.teal.600");
+  word-wrap: normal !important;
+}
+
+.content a {
+  color: theme("colors.blue.400");
+  text-decoration: underline;
+}
