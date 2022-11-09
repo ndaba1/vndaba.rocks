@@ -22,19 +22,19 @@ import List from "~/components/List.astro";
 
 Knowing how to write bash scripts is a skill that can come in handy if you do anything that requires a significant amount of automation. And not just bash scripts, even scripting in Powershell or windows batch scripts can prove useful. Usually, these are things that are learned by devops engineers but even if you are a web developer, you ought to know how to do so. After all, there ain't no such thing as too much knowledge.
 
-Recently, at the beginning of this year, I decided to go on a 365 day streak on github. I found that I needed to know how many commits I had made per day without necessarily checking my [github wall]("https://github.com/ndaba1"). My first instinct was to create a tool in Rust that would help me achieve this and much more, it was meant to be a wrapper around git but I soon realized that was overkill and a few simple bash scripts would do the job just fine. In this blog, we are going to explore bash scripting while we write scripts that can be used to:
+Recently, at the beginning of this year, I decided to go on a 365 day streak on github. I found that I needed to know how many commits I had made per day without necessarily checking my [github wall](https://github.com/ndaba1). My first instinct was to create a tool in Rust that would help me achieve this and much more, it was meant to be a wrapper around git but I soon realized that was overkill and a few simple bash scripts would do the job just fine. In this blog, we are going to explore bash scripting while we write scripts that can be used to:
 
 - Count the number of commits in a single repository
-- Track every repository on your computer and run common git commands across all of them
+- Track every repository on your computer and run common git commands across all of them.
   By the end of it, you will have a good understanding of variables, loops, functions and general bash knowledge.
 
 ## Part 1: Commit counter
 
-A commit counter script shouldn't be too difficult to write. Git already does most of the work for us by storing every commit you've ever made in the logs. You can view this logs by running `git log`. This, coupled with the unix philosophy of "Do one thing and do it really well" will turn out quite handy for us. Each commit in the git logs has a `Date` property as seen below
+A commit counter script shouldn't be too difficult to write. Git already does most of the work for us by storing every commit you've ever made in the logs. You can view this logs by running `git log`. This, coupled with the unix philosophy of "Do one thing and do it really well" will turn out quite handy for us. Each commit in the git logs is assigned a `Date` property.
 
-Knowing this, the only thing we'd have to do is find a way to count all the appearances of the `Date` word and by doing so, we will have effectively counted all the commits in the repository. But that isn't what we want, not really. We need a way to count only the commits made on the current date. Now, as usual, there are many different ways to achieve this. We are going to explore a couple of ways.
+Knowing this, the only thing we'd have to do is find a way to count all the appearances of the `Date` word and by doing so, we will have effectively counted all the commits in the repository. But that isn't what we want, not really. We need a way to count only the commits made on the current date. Now, as usual, there are many different ways to achieve this. We are going to explore one of these ways.
 
-`Git` is a tool that has a plethora of commands and numerous different ways of running them. The problem we are facing is that we need to scan the git logs for every commit matching the current day/date. This sound easy enough: we can use the `date` command for that. Unix systems were made to be composable and the concept of `piping` commands into each other is not a new one. If you've had some experience with Unix/Linux, you are probably thinking of a way to combine `grep`, `date`, `wc` and `git` commands to achieve everything. If you have never heard of these tools before, running them with the `--help` flag should show you some helpful info but for more in depth details, you can use the `man` command to see the manual pages for these commands, i.e `man grep`.
+`Git` is a tool that has a plethora of commands and numerous different ways of running them. The problem we are facing is that we need to scan the git logs for every commit matching the current day/date. This sounds easy enough: we can use the `date` command for that. Unix systems were made to be composable and the concept of `piping` commands into each other is not a new one. If you've had some experience with Unix/Linux, you are probably thinking of a way to combine `grep`, `date`, `wc` and `git` commands to achieve everything. If you have never heard of these tools before, running them with the `--help` flag should show you some helpful info but for more in depth details, you can use the `man` command to see the manual pages for these commands, i.e `man grep`.
 
 That being said, here's my explanations of what these tools do and how they can help our cause:
 
@@ -48,9 +48,9 @@ But talk is cheap, show me the code. The best way to learn is to just do it and 
 git log | grep "$(date)" | wc -l
 ```
 
-This command is interpreted as follows. First, run `git log` and from the logs collected by git, use that as input into the `grep` command. And since grep needs to know what it's actually scanning for, we pass in the `date` command, wrapping the command in "$( )" tells bash to execute the command before passing it to grep, therefore, grep gets the current date and not the word 'date'. Finnaly, grep will find every occurrence of the date and pass it to `wc` which in turn counts every line and returns a final number to us. However, if you try to run this command as it is, you will get 0 as your result even if you have actual commits in the current repository.
+This command is interpreted as follows. First, run `git log` and from the logs collected by git, use that as input into the `grep` command. And since grep needs to know what it's actually scanning for, we pass in the `date` command, wrapping the command in "$( )" tells bash to execute the command before passing it to grep, therefore, grep gets the current date and not the word 'date'. Finally, grep will find every occurrence of the date and pass it to `wc` which in turn counts every line and returns a final number to us. However, if you try to run this command as it is, you will get 0 as your result even if you have actual commits in the current repository.
 
-The problem is that, `git log` and `date` use different date formats, at least in their default states. We need a way to reconcile this difference. We can do so by passing arguments to either of the tools. To do so, we need to understand different date formatting commands. These are explained in great detail in the help section of the `date` command.
+The problem is that, `git log` and `date` use different date formats, at least in their default states. We need a way to reconcile this difference. We can do so by passing arguments to either of the tools. To do so, we need to understand different date formatting commands. These are explained in great detail in the help section of the `date` command. Run `date --help` to see these.
 
 The easiest way to reconcile this difference is to tell the `date` command to format the dates differently. We can do this by passing arguments to it in the following way.
 
@@ -64,15 +64,21 @@ This "tells" the command to only provide us with the day("%a"), month("%b") and 
 git log | grep "$(date +'%a %b %-d')" | wc -l
 ```
 
-And voila! The script should now run successully. Go ahead and save this command in a file named `commit_counter.sh` in your home directory. Now, whenever you want to know how many commits you've made today. you can simply run
+And voila! The script should now run successully. Go ahead and save this command in a file named `commit_counter.sh` in your home directory. The contents of the file should be as follows:
+
+```bash
+#!/bin/bash
+
+git log | grep "$(date +'%a %b %-d')" | wc -l
+```
+
+Now, whenever you want to know how many commits you've made today. you can simply run
 
 ```bash
 ~/commit_counter.sh
 ```
 
-TODO: Enter screenshot of my commit-counter
-
-This was the easy part, we still need to find a way to run this command accross every repository on your computer to truly know how many commits you've made. Let's tackle this next.
+This was the easy part, we still need to find a way to run this command accross every repository on your computer to truly know how many commits you've made on a given day. Let's tackle this next.
 
 ## Part 2: Commit cop
 
@@ -97,10 +103,10 @@ We need a way to tell if the argument passed to the commit cop corresponds to ad
 An if statement in bash is structured in the following way:
 
 ```bash
-val=2
-if [ $val -eq 1 ]; then
+val="hello"
+if [ "$val" == "hello" ]; then
 	# do something
-elif [ $val -eq 2 ];then
+elif [ "$val" == "world" ];then
 	# do something
 else
 	# do something else
