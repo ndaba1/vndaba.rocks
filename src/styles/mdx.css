@@ -13,7 +13,8 @@ code {
   word-wrap: normal !important;
 }
 
-.content a {
+.content a,
+a.highlight {
   color: theme("colors.blue.400");
   text-decoration: underline;
 }
