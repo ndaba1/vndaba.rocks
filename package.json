@@ -13,7 +13,9 @@
     "prepare": "husky install",
     "format": "prettier -w ./**/*.{js,ts,jsx,tsx}",
     "lint": "eslint . --ext .js,.ts,.astro,.jsx,.tsx",
-    "check:format": "prettier -c ./**/*.{js,ts,jsx,tsx}"
+    "check:format": "prettier -c ./**/*.{js,ts,jsx,tsx}",
+    "lint:fix": "eslint . --fix --ext .js,.ts,.astro,.jsx,.tsx",
+    "check:all": "pnpm check:format && pnpm lint"
   },
   "dependencies": {
     "@astrojs/image": "^0.7.0",
