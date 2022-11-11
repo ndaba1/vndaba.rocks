@@ -1,7 +1,15 @@
 ---
-title: "A complete guide to monorepos"
-slug: "complete-guide-to-monorepos"
+title: "Managing monorepos using pnpm"
+slug: "managing-monorepos-using-pnpm"
 tags: ["pnpm", "monorepos", "workspaces"]
-excerpt: It's no doubt that Next.js is a beast of a framework and one of the best choices when creating a web-app. Recently, I played around with the new Nuxt3, which is beta at the time of writing this blog and I will be comparing the two, from DX to architecture and just how it feels to work with them generally.
-date: 2022-09-27
+excerpt: pnpm is by far the best package manager that I have ever come accross. Other than its well-known advantages over other package managers, managing monorepos is where pnpm especially shines. In this article, we explore managing a monorepo using pnpm
+date: 2022-10-27
 ---
+
+import Alert from "~/components/Alert.astro";
+
+<Alert variant="danger">This blog post is incomplete. I will be adding more content to it soon.</Alert>
+
+If you are unfamiliar with what a monorepo is, it is simply a single repository containing different but related projects. Projects like [babel](https://github.com/babeljs/babel) have adopted a monorepo structure since it is much easier to manage when dealing with closely related packages. In the javascript ecosystem, there are various ways of managing a monorepo. There are tools like [lerna](https://lerna.com), [turborepo](https://turborepo.com), [Nx](https://nx.dev), [Rush](https://rush.dev) but I have found that using pnpm mostly eliminates the need for using a third party tool.
+
+All package managers support the concept of workspaces which is what allows us to have multiple JS/TS projects in a single repository. For our purposes, we will only be using pnpm-workspaces which are a bit different from yarn/npm workspaces. There are usually two kind of monorepos. The first kind can be consisted of apps and packages in the sense that apps are the projects that can be executed (i.e A react app, or remix app) while packages are libraries that can only be imported into other projects. The other kind of monorepo is one that is purely comprised of libraries which is what most open source tools use.
