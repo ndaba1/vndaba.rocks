@@ -1,0 +1,20 @@
+---
+title: "Introducing backframe.js"
+slug: "introducing-backframe-js"
+tags: ["backframe", "nodejs", "frameworks"]
+excerpt: Knowing how to write bash scripts is a skill that can come in handy if you do anything that requires a significant amount of automation. And not just bash scripts, even scripting in Powershell or windows batch scripts can prove useful.
+date: 2023-08-31
+---
+
+### Disclaimer
+`backframe.js` is still in its very early stages of development. Please note that this blog may describe features that are not yet implemented at the time of reading as to give you an idea of what the final product will look like.
+
+## The why 
+I don't know about you but the first time I used Firebase, it felt really awesome. It was just so cool have to do next to nothing and yet have a fully functional backend*. And not just that, but a dashboard from where I could see/manage everything. It was just so cool: The power of the sun, in the palm of my hand :). But then as I grew as a backend developer, I found myself craving certain functionalities that Firebase didn't provide. And not just them, but other BaaS providers as well: `supabase`, `appwrite`, `nhost`, `amplify` (😬 shakes traumatically). And thus began the series of steps that would eventually lead me down the `backframe.js` road.
+
+Now I know what you're thinking: 'Oh God, another backend framework/baas'. And while you are completely justified in thinking that, allow me to explain why I think `backframe.js` is different.
+
+In my journey as a backend developer, I've worked with a bunch of BaaS providers and backend frameworks. And while they all had their pros and cons, I found that they all had one thing in common: They were all opinionated. And while that's not necessarily a bad thing, it does mean that you have to learn how to do things their way. And if you're like me, you probably don't like that. I mean, I'm all for learning new things, but I don't want to have to learn a new way of doing things every time I want to use a new framework. The best metaphor I once came up with for this is that it's like you're trying to buy legos. Now amplify and the rest, sell you an already built lego set (that is glued together). And while that's great for certain use cases, it means that you can't really do much with it. You can't really build anything new with it. You can only use it for what it was built for. And that's fine, but what if you want to build something new? What if you want to build a lego house? Well, you can't. You might find creative workarounds/hacks for your use cases, but you shouldn't have to do that in the first place. And that's where `backframe.js` comes in. `backframe.js` doesn't sell you a lego set. It sells you the legos. And not just any legos, but legos that you can use to build anything you want. You can build a lego house, a lego car, a lego plane, a lego boat, a lego spaceship, a lego rocket, a lego rocket ship (😂). You can build anything you want (well, maybe not anything, you get the point). And that's the beauty of it. It's not as opinionated. It doesn't tell you how to do things. It just gives you the tools to do things. And that's what I love about it. It's like a blank canvas. You can paint whatever you want on it. You can build whatever you want with it. It's just so cool. And that's why I love it. And that's why I think you'll love it too.
+
+## The what
+So what exactly is `backframe.js`? Well, this is where it gets a bit tricky. I often find it hard to explain it to people because it's a bunch of things at once. It's a backend framework, it's a BaaS, it's a CLI tool, it's a bunch of things. But if I had to explain it in one sentence, I'd say it's a backend framework that allows you to build your own BaaS. At the core, it is really just another javascript framework built on top of express. The approach taken to design it allows it to have a modular architecture that makes it easy to extend and customize. And that's where the backend part comes in. It's build around the idea of plugins and these plugins offer different functionality ranging from User Auth, Admin dashboard, Websockets functionality etc. 
