@@ -6,8 +6,11 @@ excerpt: A walkthrough of building a simple API using backframe.js and prisma.
 date: 2023-09-20
 ---
 
-### Disclaimer
-`backframe.js` is still in its very early stages of development. It is prone to breaking changes and a few bugs here and there. 
+import Alert from "~/components/Alert.astro";
+
+
+<Alert variant="warn" title="Disclaimer">`backframe.js` is still in its very early stages of development. It is prone to breaking changes and a few bugs here and there. </Alert>
+
 
 ### Introduction
 I recently decided to [build backframe.js in public](/blog/introducing-backframe) and in that spirit, I thought it would be a good idea to write a few tutorials on how to use it as it evolves. Recently, initial implementations of database adapters have been added to the framework and it's just too cool a feature to not blog about. 
@@ -19,12 +22,12 @@ At the time of writing, there are only adapters for [prisma](https://backframe.d
 > One of the goals of backframe.js is to make it easy to use any database you want whilst still maintaining the 'magic' of the framework. To do this, backframe.js uses adapters to handle the database specific code. Adapters are just objects that have a few methods that backframe.js uses to interact with the database. The methods are:
 `create`, `read`, `list`, `update`, `delete`. These adapters aren't meant to be used standalone, but rather with your favorit ORM i.e Prisma / Drizzle. However, if you prefer not to use an ORM, you can create your own adapter to interact with your database. Learn more [here](/docs/advanced/adapters).
 
-_Taken from the [docs](https://backframe.dev/concepts/adapters)_
+_Taken from the [docs](https://backframe.dev/docs/concepts/adapters)_
 
 ### What are we building?
-We'll be building a simple API that allows us to create, read, update and delete users. We'll be using prisma as our ORM and sqlite as our database. To get started, simply create a new backframe.js project by running:
+We'll be building a simple API that allows us to create, read, update and delete posts. We'll be using prisma as our ORM and sqlite as our database. To get started, simply create a new backframe.js project by running:
 
-```
+```bash
 pnpx create-bf@latest bf-app
 ```
 
@@ -33,13 +36,13 @@ Once that's done, you will need to setup prisma and create a simple `Post` model
 ### Setting up prisma
 To setup prisma, run the following commands:
 
-```
+```bash
 pnpm add prisma @prisma/client
 ```
 
 This will install the prisma command line utility and the prisma client. Next, run:
 
-```
+```bash
 pnpm prisma init --datasource-provider sqlite
 ```
 Thic command will simply setup prisma to work with sqlite and create a `schema.prisma` file. We are working with sqlite because it's easy to setup and use. However, you can use any database you want. You can learn more about setting up prisma on their [docs](https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch-sql-typescript-postgres).
@@ -73,7 +76,7 @@ model Post {
 
 Next, push your schema to the database by running:
 
-```
+```bash
 pnpm prisma db push
 ```
 
@@ -83,6 +86,7 @@ And with that, you're done setting up prisma. Next, you'll need to initialize th
 Proceed to create a new file inside the `src` directory of your folder named `db.ts`. This file will contain all the code related to prisma. First, we'll initialize the prisma client by adding the following code to the file:
 
 ```ts
+// src/db.ts
 import { PrismaClient } from "@prisma/client";
 
 export const db = new PrismaClient();
@@ -90,13 +94,14 @@ export const db = new PrismaClient();
 
 Next, install the backframe-prisma adapter by running:
 
-```
+```bash
 pnpm add @backframe/adapter-prisma
 ```
 
 Then, connect the adapter to the client and pass it to your backframe config file. Your `bf.config.ts` file should now look like this:
 
 ```ts
+// bf.config.ts
 import { defineConfig } from "@backframe/core";
 import { PrismaAdapter } from "@backframe/adapter-prisma";
 import { db } from "./src/db.js";
@@ -111,10 +116,12 @@ export default defineConfig({
 });
 ```
 
+<Alert variant="infor" title="Tip">Make sure to include the `.js` extension when importing the db object </Alert>
+
 And with that, you're done setting up prisma and the adapter. 
 
 ### Creating the posts endpoints
-Assuming we're building an actual API, we will a way for end users to `create`, `read`, `update` and probably even `delete` posts. This is what backframe is built for (You might wanna place your arm right below your jaw coz it's about to drop ;D ).
+Assuming we're building an actual API, we will a way for end users to `create`, `read`, `update` and probably even `delete` posts. This is what backframe is built for (You might wanna place your hand right below your jaw coz it's probably about to drop ;D ).
 
 Fun fact about backframe, a file doesn't have to contain any code for it to be used by the framework. This is part of the philosophy of `working out of the box whilst still being flexible`. To create the endpoints, we'll create a file named `posts.ts` inside the `src/routes` directory. This file will contain all the code related to posts. But even as an empty file, you can make requests to it and receive a response resembling the following:
 
@@ -244,7 +251,7 @@ export const GET = createHandler({
 This will ensure that only the fields defined in the output validator are returned. Any other fields will be ignored.
 Validators for `query` and `params` work in the same way. All validators are optional and can be used in any combination. This way, we think of an API in terms of inputs and outputs rather than the underlying database. No more models, controllers, services, etc. Just inputs and outputs. It's quite simpler, wouldn't you agree?
 
-### What if I'm a drizzle-ite?
+### What if I'm a `drizzle-ite`?
 I don't know if that's a thing but if you're using drizzle, you can still follow along. The only difference is that you'll need to install the `@backframe/adapter-drizzle` package instead of `@backframe/adapter-prisma`. See docs [here](https://backframe.dev/docs/plugins/drizzle).
 
 ### Conclusion
