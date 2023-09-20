@@ -1,0 +1,256 @@
+---
+title: "Building a simple API with prisma and backframe.js"
+slug: "backframe-prisma-api"
+tags: ["backframe", "nodejs", "frameworks", "prisma", "api"]
+excerpt: A walkthrough of building a simple API using backframe.js and prisma.
+date: 2023-09-20
+---
+
+### Disclaimer
+`backframe.js` is still in its very early stages of development. It is prone to breaking changes and a few bugs here and there. 
+
+### Introduction
+I recently decided to [build backframe.js in public](/blog/introducing-backframe) and in that spirit, I thought it would be a good idea to write a few tutorials on how to use it as it evolves. Recently, initial implementations of database adapters have been added to the framework and it's just too cool a feature to not blog about. 
+
+At the time of writing, there are only adapters for [prisma](https://backframe.dev/docs/plugins/prisma) and [drizzle](https://backframe.dev/docs/plugins/drizzle). I'll be using prisma for this tutorial. However, the concepts are the same for both adapters.
+
+### What exactly is an adapter? (for our purposes)
+
+> One of the goals of backframe.js is to make it easy to use any database you want whilst still maintaining the 'magic' of the framework. To do this, backframe.js uses adapters to handle the database specific code. Adapters are just objects that have a few methods that backframe.js uses to interact with the database. The methods are:
+`create`, `read`, `list`, `update`, `delete`. These adapters aren't meant to be used standalone, but rather with your favorit ORM i.e Prisma / Drizzle. However, if you prefer not to use an ORM, you can create your own adapter to interact with your database. Learn more [here](/docs/advanced/adapters).
+
+_Taken from the [docs](https://backframe.dev/concepts/adapters)_
+
+### What are we building?
+We'll be building a simple API that allows us to create, read, update and delete users. We'll be using prisma as our ORM and sqlite as our database. To get started, simply create a new backframe.js project by running:
+
+```
+pnpx create-bf@latest bf-app
+```
+
+Once that's done, you will need to setup prisma and create a simple `Post` model.
+
+### Setting up prisma
+To setup prisma, run the following commands:
+
+```
+pnpm add prisma @prisma/client
+```
+
+This will install the prisma command line utility and the prisma client. Next, run:
+
+```
+pnpm prisma init --datasource-provider sqlite
+```
+Thic command will simply setup prisma to work with sqlite and create a `schema.prisma` file. We are working with sqlite because it's easy to setup and use. However, you can use any database you want. You can learn more about setting up prisma on their [docs](https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch-sql-typescript-postgres).
+
+You can then update your `schema.prisma` file to look like this:
+
+
+```prisma
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String
+  content   String?
+  published Boolean  @default(false)
+  authorId  Int?
+}
+```
+
+Next, push your schema to the database by running:
+
+```
+pnpm prisma db push
+```
+
+And with that, you're done setting up prisma. Next, you'll need to initialize the prisma client as well as the backframe-prisma adapter.
+
+### Initializing prisma client and adapter
+Proceed to create a new file inside the `src` directory of your folder named `db.ts`. This file will contain all the code related to prisma. First, we'll initialize the prisma client by adding the following code to the file:
+
+```ts
+import { PrismaClient } from "@prisma/client";
+
+export const db = new PrismaClient();
+```
+
+Next, install the backframe-prisma adapter by running:
+
+```
+pnpm add @backframe/adapter-prisma
+```
+
+Then, connect the adapter to the client and pass it to your backframe config file. Your `bf.config.ts` file should now look like this:
+
+```ts
+import { defineConfig } from "@backframe/core";
+import { PrismaAdapter } from "@backframe/adapter-prisma";
+import { db } from "./src/db.js";
+
+const database = new PrismaAdapter(db);
+
+export default defineConfig({
+  interfaces: {
+    rest: {},
+  },
+  database,
+});
+```
+
+And with that, you're done setting up prisma and the adapter. 
+
+### Creating the posts endpoints
+Assuming we're building an actual API, we will a way for end users to `create`, `read`, `update` and probably even `delete` posts. This is what backframe is built for (You might wanna place your arm right below your jaw coz it's about to drop ;D ).
+
+Fun fact about backframe, a file doesn't have to contain any code for it to be used by the framework. This is part of the philosophy of `working out of the box whilst still being flexible`. To create the endpoints, we'll create a file named `posts.ts` inside the `src/routes` directory. This file will contain all the code related to posts. But even as an empty file, you can make requests to it and receive a response resembling the following:
+
+```json
+{
+  "status": "Okay",
+  "msg": "The `GET` method for the `/empty` route is working successfully.",
+  "body": "This is a default static handler. It can be overriden by defining your own handler for the `GET` method or by defining a model in the config of the `/empty` route."
+}
+```
+
+> It can be overriden by defining your own handler for the `GET` method or by defining a model in the config of the `/empty` route.
+
+As it says in the response body, we can override the default static handler by linking the endpoint to a model. We do this by using the `defineRouteConfig` method and exporting that as a constant named `config`. See implementation below:
+
+```ts
+// src/routes/posts.ts
+import { defineRouteConfig } from "@backframe/rest";
+
+export const config = defineRouteConfig({
+  model: "post", // name of the model
+  enabledMethods: ["get", "post"],
+});
+
+> Tip: If the `model` and the `route` are the same, you can leave the file empty and backframe will automatically link the route to the model.
+```
+
+Adding this will enabled two endpoints for our `posts` resource:
+- `GET /posts` - This will return a list of all posts.
+- `POST /posts` - This will create a new post.
+
+This still leaves us with the `GET /posts/:id` and `PUT /posts/:id` endpoints. To enable these, we'll need to add a new file names `posts.$id.ts`. To learn more about backframe routing patterns, check out the [docs](https://backframe.dev/docs/concepts/routing).
+
+```ts
+import { defineRouteConfig } from "@backframe/rest";
+
+export const config = defineRouteConfig({
+  model: "post",
+  enabledMethods: ["get", "put", "delete"],
+});
+```
+
+This will enable the following endpoints:
+- `GET /posts/:id` - This will return a single post.
+- `PUT /posts/:id` - This will update a single post.
+- `DELETE /posts/:id` - This will delete a single post.
+
+And just like that, we have a fully functional CRUD API. Well, almost. There are a few gotchas that we'll need to address. As it stands, if you tried making a request to `GET /posts/:id`, you may notice an error similar to the following:
+
+```json
+{
+  "status": "Error",
+  "msg": "\nInvalid `prisma.post.findFirst()` invocation:\n\n{\n  where: {\n    id: \"2\"\n        ~~~\n  }\n}\n\nArgument `id`: Invalid value provided. Expected IntFilter or Int, provided String."
+}
+```
+
+This is happening since prisma is expecting an integer for the `id` field but we're passing a string. To fix this, we'll need to write a few more lines of code. One of the cool tools backframe.js is built on top of is [zod](https://zod.dev). It is a powerful type validator but also offers a lot more, for instance, type coercion. We'll be using it to coerce the `id` field to an integer as shown below:
+
+```ts
+// src/routes/posts.$id.ts
+import { createHandler, defineRouteConfig, z } from "@backframe/rest";
+
+export const config = defineRouteConfig({
+  model: "post",
+  enabledMethods: ["get", "put", "delete"],
+});
+
+export const GET = createHandler({
+  params: z.object({
+    id: z.coerce.number(),
+  }),
+});
+```
+
+Let's break down what's happening in the code above:
+
+> Tip: The `@backframe/rest` pkg re-exports zod so you don't need to install it separately.
+
+- We import the `createHandler` method from `@backframe/rest`. This method is used to create a handler for a specific method. In this case, we're creating a handler for the `GET` method.
+- The create handler accepts an object with varios keys: `input`, `query`, `params`, `output`, `action` and `middleware`. The first four are zod objects which are used to parse and refine the respective inputs/outputs. This happens automatically. 
+- Notice that defining our custom `GET` handler does not override the default dynamic handler (what is using prisma underneath to make DB requests). To do this, you would need to explicitly define the `action` for that handler which is a method that takes in the request context.
+
+With this changes, all the endpoints should be working as expected. But we can still make it better. One thing that we've glossed over is input validation. Currently, whatever input is passed by the user is blindly forwarded to the database. This is not desired. For instance, if this was a `users` model, they would be able to pass in a custom `role` field and have elevated permissions. We need to validate that input.
+
+### Input validation and refinement
+`backframe.js` uses zod to define request input validators. Any fields not defined in the zod object but passed in the input will be ignored. See example below:
+
+```ts
+// src/routes/posts.ts
+import { createHandler, defineRouteConfig, z } from "@backframe/rest";
+
+export const config = defineRouteConfig({
+  model: "post",
+  enabledMethods: ["get", "post"],
+});
+
+export const POST = createHandler({
+  input: z.object({
+    title: z.string(),
+    content: z.string().optional(),
+  }),
+});
+```
+
+This will update the post endpoint to require that a title be defined and that the content field is optional. If the user passes in a field that is not defined in the zod object, it will be ignored. This is a great way to prevent users from passing in fields that they shouldn't (for example, `authorId`).
+
+In the same way, we can also define output validators. This is useful when you want to return a subset of the fields in the database. For instance, you may want to return the `id`, `title` and `content` fields but not the `authorId` field. To do this, we can define an output validator as shown below:
+
+```ts
+// src/routes/posts.ts
+import { createHandler, defineRouteConfig, z } from "@backframe/rest";
+
+export const config = defineRouteConfig({
+	model: "post",
+	enabledMethods: ["get", "post"],
+});
+
+export const GET = createHandler({
+	output: z.object({
+		id: z.number(),
+		title: z.string(),
+		content: z.string().optional(),
+	}),
+});
+```
+
+This will ensure that only the fields defined in the output validator are returned. Any other fields will be ignored.
+Validators for `query` and `params` work in the same way. All validators are optional and can be used in any combination. This way, we think of an API in terms of inputs and outputs rather than the underlying database. No more models, controllers, services, etc. Just inputs and outputs. It's quite simpler, wouldn't you agree?
+
+### What if I'm a drizzle-ite?
+I don't know if that's a thing but if you're using drizzle, you can still follow along. The only difference is that you'll need to install the `@backframe/adapter-drizzle` package instead of `@backframe/adapter-prisma`. See docs [here](https://backframe.dev/docs/plugins/drizzle).
+
+### Conclusion
+
+Well, that's a wrap. Thank you for reading this far. Consider [giving backframe.js a star on github](
+	https://github.com/backframe/backframe.js/stargazers
+) if you found this tutorial helpful. If you have any questions, feel free to reach out to me. I'm always happy to help.
+Contributions are also welcome. You can learn more about backframe [here](https://backframe.dev).
+
