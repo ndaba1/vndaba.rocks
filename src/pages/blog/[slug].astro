@@ -34,7 +34,7 @@ const { Content, frontmatter } = Astro.props.post;
       <h5 class="dimmed">
         By Victor Ndaba, {new Date(frontmatter.date).toLocaleDateString()}
       </h5>
-      <div class="flex items-center gap-3">
+      <div class="flex flex-wrap items-center gap-3">
         <span>Tags:</span>
         {
           frontmatter.tags.map((i: string) => (
