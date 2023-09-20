@@ -50,7 +50,7 @@ let gradients = [
               <div class="bg-white dark:bg-zinc-900 rounded-2xl p-5 space-y-3">
                 <h5 class="line-clamp-1 font-medium !text-xl">{blog.frontmatter.title}</h5>
                 <p class="dimmed line-clamp-4">{blog.frontmatter.excerpt}</p>
-                <div class="flex items-center gap-3">
+                <div class="flex flex-wrap items-center gap-3">
                   {blog.frontmatter.tags.map((i: string) => (
                     <span class="text-sm bg-green-300 dark:bg-green-600/30 rounded-3xl px-2">#{i}</span>
                   ))}
